@@ -16,12 +16,17 @@ public class Scheduler {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private RestController restController = new RestController();
     private static final String SYNOPTIC_DATA_URL = "https://energydatacollector.herokuapp.com/danepubliczne/synopticdata";
+    private static final String SYNOPTIC_DATA_RESPONSE_SUCCESS = "Data retrieved successfully.";
 
     @Scheduled(fixedRate = 1800000)
     public void synopticData(){
-        System.out.println("Function = synopticData");
-        log.info("The time is now {}", dateFormat.format(new Date()));
-        System.out.println(restController.sendRequest(SYNOPTIC_DATA_URL));
+        String response;
+        do {
+            System.out.println("Function = synopticData");
+            log.info("The time is now {}", dateFormat.format(new Date()));
+            response = restController.sendRequest(SYNOPTIC_DATA_URL);
+            System.out.println("Response: " + response);
+        } while (!response.equals(SYNOPTIC_DATA_RESPONSE_SUCCESS));
     }
 
 //    @Scheduled(fixedRate = 3000)
